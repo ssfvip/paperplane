@@ -1,9 +1,33 @@
 package com.example.ssf.paperplane;
 
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
+/**
+ * 主页的设计是，根据侧滑菜单的切换两种模式，来控制首页和收藏页面的
+ * 既MainFragment，BookmarksFragment
+ */
 public class MainActivity extends AppCompatActivity {
+
+
+    //侧滑布局
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private Toolbar toolbar;
+
+    private static final String ACTION_BOOKMARKS = ""; // 用于判断当前页面位置的标识
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+
+}
 
 //    about 关于页面
 //    |   |   |   |   |   ├── adapter RecyclerView与ViewPager等控件的Adapter
@@ -23,9 +47,3 @@ public class MainActivity extends AppCompatActivity {
 //    |   |   |   |   |   ├── util 工具类集合
 //    |   |   |   |   |   ├── BasePresenter.java Presenter基类
 //    |   |   |   |   |   ├── BaseView.java View基类
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}
