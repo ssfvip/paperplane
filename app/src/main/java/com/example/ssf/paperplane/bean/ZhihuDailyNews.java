@@ -47,18 +47,19 @@ public class ZhihuDailyNews {
 
     // stories内部
     public class Question {
-        private ArrayList<String> image;
+        private ArrayList<String> images;
         private int type;
         private int id;
         private String ga_prefix;
         private String title;
 
-        public ArrayList<String> getImage() {
-            return image;
+
+        public ArrayList<String> getImages() {
+            return images;
         }
 
-        public void setImage(ArrayList<String> image) {
-            this.image = image;
+        public void setImages(ArrayList<String> images) {
+            this.images = images;
         }
 
         public int getType() {

@@ -29,6 +29,9 @@ public class MainFragment extends Fragment {
     private GuoKrFragment guokrFragment;
     private DouBanMomentFragment doubanMomentFragment;
 
+    //
+     private ZhihuDailyPresenter zhihuDailyPresenter;
+
 //    単例模式
     public MainFragment(){}
     public static MainFragment newInstance(){
@@ -59,7 +62,8 @@ public class MainFragment extends Fragment {
             guokrFragment = GuoKrFragment.newInstance();
             doubanMomentFragment = DouBanMomentFragment.newInstance();
         }
-
+        // 初始化各个presenter
+        zhihuDailyPresenter = new ZhihuDailyPresenter(context, zhihuDailyFragment);
     }
 
     @Nullable

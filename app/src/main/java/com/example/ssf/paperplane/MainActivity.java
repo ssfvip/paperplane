@@ -1,6 +1,8 @@
 package com.example.ssf.paperplane;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -21,6 +23,7 @@ import android.view.View;
 import com.example.ssf.paperplane.about.AboutPreferenceActivity;
 import com.example.ssf.paperplane.bookmarks.BookmarksFragment;
 import com.example.ssf.paperplane.homepage.MainFragment;
+import com.example.ssf.paperplane.service.CacheService;
 import com.example.ssf.paperplane.settings.SettingsPreferenceActivity;
 import com.githang.statusbar.StatusBarCompat;
 
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showMainFragment();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-
-//        startService(new Intent(this, CacheService.class));
+        // 启动服务
+        startService(new Intent(this, CacheService.class));
     }
 
     private void initViews() {
@@ -135,7 +138,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 设置item的点击事件的监听
         navigationView.setNavigationItemSelectedListener(this);
     }
-
+    @Override
+    protected void onDestroy() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (CacheService.class.getName().equals(service.service.getClassName())) {
+                stopService(new Intent(this, CacheService.class));
+            }
+        }
+        super.onDestroy();
+    }
     /**
      * 显示收藏页面
      */
