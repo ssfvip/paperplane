@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,13 +33,18 @@ public class MainFragment extends Fragment {
     private DouBanMomentFragment doubanMomentFragment;
 
     //
-     private ZhihuDailyPresenter zhihuDailyPresenter;
+    private ZhihuDailyPresenter zhihuDailyPresenter;
+    private GuokrPresenter guokrPresenter;
+    private DoubanMomentPresenter doubanMomentPresenter;
 
-//    単例模式
-    public MainFragment(){}
-    public static MainFragment newInstance(){
+    //    単例模式
+    public MainFragment() {
+    }
+
+    public static MainFragment newInstance() {
         return new MainFragment();
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,24 +60,26 @@ public class MainFragment extends Fragment {
          * 对缓存进行判空处理
          * 当为空的时候new实例出来使用
          */
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             FragmentManager manger = getChildFragmentManager();
             zhihuDailyFragment = (ZhihuDailyFragment) manger.getFragment(savedInstanceState, "zhihu");
             guokrFragment = (GuoKrFragment) manger.getFragment(savedInstanceState, "guokr");
             doubanMomentFragment = (DouBanMomentFragment) manger.getFragment(savedInstanceState, "douban");
-        }else {
+        } else {
             zhihuDailyFragment = ZhihuDailyFragment.newInstance();
             guokrFragment = GuoKrFragment.newInstance();
             doubanMomentFragment = DouBanMomentFragment.newInstance();
         }
         // 初始化各个presenter
         zhihuDailyPresenter = new ZhihuDailyPresenter(context, zhihuDailyFragment);
+        guokrPresenter = new GuokrPresenter(context, guokrFragment);
+        doubanMomentPresenter = new DoubanMomentPresenter(context, doubanMomentFragment);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main,container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         initViews(view);
         // 想让Fragment中的onCreateOptionsMenu生效必须先调用setHasOptionsMenu方法
@@ -100,7 +110,14 @@ public class MainFragment extends Fragment {
         });
         return view;
     }
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FragmentManager manager = getChildFragmentManager();
+        manager.putFragment(outState, "zhihu", zhihuDailyFragment);
+        manager.putFragment(outState, "guokr", guokrFragment);
+        manager.putFragment(outState, "douban", doubanMomentFragment);
+    }
     private void initViews(View view) {
         tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
@@ -115,7 +132,22 @@ public class MainFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
     }
-    public  MainPagerAdapter getAdapter(){
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.main, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_feel_lucky) {
+//            feelLucky();
+//        }
+//        return true;
+//    }
+    public MainPagerAdapter getAdapter() {
         return pagerAdapter;
     }
 }

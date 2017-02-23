@@ -192,6 +192,7 @@ public class CacheService extends Service{
     public void onDestroy() {
         super.onDestroy();
         VolleySingleton.getVolleySingleton(this).getRequestQueue().cancelAll(TAG);
+        // 在销毁activity时候，进行对数据库的清理操作
         deleteTimeoutPosts();
     }
     private class LocalReceiver extends BroadcastReceiver {
@@ -222,6 +223,7 @@ public class CacheService extends Service{
         long timeStamp = (c.getTimeInMillis() / 1000) - Long.parseLong(sp.getString("time_of_saving_articles", "7"))*24*60*60;
 
         String[] whereArgs = new String[] {String.valueOf(timeStamp)};
+        // 清理数据库的操作
         db.delete("Zhihu", "zhihu_time < ? and bookmark != 1", whereArgs);
         db.delete("Guokr", "guokr_time < ? and bookmark != 1", whereArgs);
         db.delete("Douban", "douban_time < ? and bookmark != 1", whereArgs);

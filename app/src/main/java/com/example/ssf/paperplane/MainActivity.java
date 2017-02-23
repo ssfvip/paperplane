@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        StatusBarCompat.setStatusBarColor(this,0xFF455ede , true);
+//        StatusBarCompat.setStatusBarColor(this,0xFF455ede , true);// 利用第三方改变状态栏的额颜色
 
         initViews();
         if (savedInstanceState != null) {
@@ -69,11 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .commit();
         }
 
-        if (!bookmarksFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.layout_fragment, bookmarksFragment, "BookmarksFragment")
-                    .commit();
-        }
+//        if (!bookmarksFragment.isAdded()) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.layout_fragment, bookmarksFragment, "BookmarksFragment")
+//                    .commit();
+//        }
 
 //        new BookmarksPresenter(MainActivity.this, bookmarksFragment);
 
@@ -231,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        return false;
+        return true;
     }
 
     @Override
@@ -248,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (bookmarksFragment.isAdded()){
             getSupportFragmentManager().putFragment(outState, "BookmarksFragment", bookmarksFragment);
         }
+
     }
 }
 
